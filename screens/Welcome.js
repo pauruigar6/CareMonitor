@@ -28,7 +28,7 @@ const Welcome = ({ navigation }) => {
             <Text style={styles.text}>Already have an account?</Text>
             <Pressable onPress={() => navigation.navigate("Login")}>
               <Text
-                style={{ ...styles.text, fontWeight: "bold", marginLeft: 5 }}
+                style={{ ...styles.text, color: COLORS.primary ,fontWeight: "bold", marginLeft: 5 }}
               >
                 Login
               </Text>

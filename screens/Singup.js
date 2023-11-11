@@ -93,37 +93,7 @@ const Signup = ({ navigation }) => {
             </View>
           </View>
 
-          <View style={styles.checkboxContainer}>
-            <Checkbox
-              style={styles.checkbox}
-              value={isChecked}
-              onValueChange={setIsChecked}
-              color={isChecked ? COLORS.primary : undefined}
-            />
-            <Text>I agree to the terms and conditions</Text>
-          </View>
-
           <Button title="Sign Up" filled style={styles.signupButton} />
-
-          <View style={styles.orDivider}>
-            <View style={styles.dividerLine} />
-            <Text style={{ fontSize: 14 }}>Or Sign up with</Text>
-            <View style={styles.dividerLine} />
-          </View>
-
-          <View style={styles.socialButtons}>
-            <TouchableOpacity
-              onPress={() => console.log("Pressed")}
-              style={styles.socialButton}
-            >
-              <Image
-                source={require("../assets/google.png")}
-                style={styles.socialIcon}
-                resizeMode="contain"
-              />
-              <Text>Google</Text>
-            </TouchableOpacity>
-          </View>
 
           <View style={styles.loginLink}>
             <Text style={{ fontSize: 16, color: COLORS.black }}>
