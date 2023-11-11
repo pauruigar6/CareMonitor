@@ -54,7 +54,10 @@ const Signup = ({ navigation }) => {
       hasErrors = true;
     }
 
-    if (password !== passwordConfirm) {
+    if (!passwordConfirm) {
+      newErrors.passwordConfirm = "Please confirm your password";
+      hasErrors = true;
+    } else if (password !== passwordConfirm) {
       newErrors.passwordConfirm = "Passwords do not match";
       hasErrors = true;
     }
@@ -140,33 +143,57 @@ const Signup = ({ navigation }) => {
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
-            <TextInput
-              placeholder="**********"
-              placeholderTextColor={COLORS.black}
-              secureTextEntry={!isPasswordShown}
-              style={styles.passwordInput}
-              value={password}
-              onChangeText={(text) => {
-                setPassword(text);
-                setErrors({ ...errors, password: "" });
-              }}
-            />
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                placeholder="**********"
+                placeholderTextColor={COLORS.black}
+                secureTextEntry={!isPasswordShown}
+                style={styles.passwordInput}
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setErrors({ ...errors, password: "" });
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => setIsPasswordShown(!isPasswordShown)}
+                style={styles.passwordToggle}
+              >
+                <Ionicons
+                  name={isPasswordShown ? "eye-off" : "eye"}
+                  size={24}
+                  color={COLORS.black}
+                />
+              </TouchableOpacity>
+            </View>
             <Text style={styles.errorText}>{errors.password}</Text>
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Confirm Password</Text>
-            <TextInput
-              placeholder="**********"
-              placeholderTextColor={COLORS.black}
-              secureTextEntry={!isPasswordShown}
-              style={styles.passwordInput}
-              value={passwordConfirm}
-              onChangeText={(text) => {
-                setPasswordConfirm(text);
-                setErrors({ ...errors, passwordConfirm: "" });
-              }}
-            />
+            <View style={styles.passwordInputContainer}>
+              <TextInput
+                placeholder="**********"
+                placeholderTextColor={COLORS.black}
+                secureTextEntry={!isPasswordShown}
+                style={styles.passwordInput}
+                value={passwordConfirm}
+                onChangeText={(text) => {
+                  setPasswordConfirm(text);
+                  setErrors({ ...errors, passwordConfirm: "" });
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => setIsPasswordShown(!isPasswordShown)}
+                style={styles.passwordToggle}
+              >
+                <Ionicons
+                  name={isPasswordShown ? "eye-off" : "eye"}
+                  size={24}
+                  color={COLORS.black}
+                />
+              </TouchableOpacity>
+            </View>
             <Text style={styles.errorText}>{errors.passwordConfirm}</Text>
           </View>
 
@@ -210,13 +237,19 @@ const styles = {
     justifyContent: "center",
     paddingLeft: 22,
   },
-  passwordInput: {
+  passwordInputContainer: {
     flex: 1,
     height: 48,
     borderColor: COLORS.black,
     borderWidth: 1,
     borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     paddingLeft: 22,
+  },
+  passwordInput: {
+    flex: 1,
   },
   passwordToggle: {
     position: "absolute",
