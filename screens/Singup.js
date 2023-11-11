@@ -4,9 +4,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
   KeyboardAvoidingView,
   ScrollView,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,6 +17,55 @@ import COLORS from "../constants/colors";
 const Signup = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const handleSignUp = () => {
+    const newErrors = {};
+    let hasErrors = false;
+
+    if (!firstName) {
+      newErrors.firstName = "First Name is required";
+      hasErrors = true;
+    }
+
+    if (!lastName) {
+      newErrors.lastName = "Last Name is required";
+      hasErrors = true;
+    }
+
+    if (!email) {
+      newErrors.email = "Email Address is required";
+      hasErrors = true;
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+      hasErrors = true;
+    }
+
+    if (password !== passwordConfirm) {
+      newErrors.passwordConfirm = "Passwords do not match";
+      hasErrors = true;
+    }
+
+    if (hasErrors) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Realiza el proceso de registro aquí
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -48,7 +97,13 @@ const Signup = ({ navigation }) => {
               placeholderTextColor={COLORS.grey}
               keyboardType="default"
               style={styles.input}
+              value={firstName}
+              onChangeText={(text) => {
+                setFirstName(text);
+                setErrors({ ...errors, firstName: "" });
+              }}
             />
+            <Text style={styles.errorText}>{errors.firstName}</Text>
           </View>
 
           <View style={styles.inputContainer}>
@@ -58,7 +113,13 @@ const Signup = ({ navigation }) => {
               placeholderTextColor={COLORS.grey}
               keyboardType="default"
               style={styles.input}
+              value={lastName}
+              onChangeText={(text) => {
+                setLastName(text);
+                setErrors({ ...errors, lastName: "" });
+              }}
             />
+            <Text style={styles.errorText}>{errors.lastName}</Text>
           </View>
 
           <View style={styles.inputContainer}>
@@ -68,32 +129,53 @@ const Signup = ({ navigation }) => {
               placeholderTextColor={COLORS.grey}
               keyboardType="email-address"
               style={styles.input}
+              value={email}
+              onChangeText={(text) => {
+                setEmail(text);
+                setErrors({ ...errors, email: "" });
+              }}
             />
+            <Text style={styles.errorText}>{errors.email}</Text>
           </View>
 
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password</Text>
-            <View style={styles.passwordInputContainer}>
-              <TextInput
-                placeholder="**********"
-                placeholderTextColor={COLORS.black}
-                secureTextEntry={!isPasswordShown}
-                style={styles.passwordInput}
-              />
-              <TouchableOpacity
-                onPress={() => setIsPasswordShown(!isPasswordShown)}
-                style={styles.passwordToggle}
-              >
-                <Ionicons
-                  name={isPasswordShown ? "eye-off" : "eye"}
-                  size={24}
-                  color={COLORS.black}
-                />
-              </TouchableOpacity>
-            </View>
+            <TextInput
+              placeholder="**********"
+              placeholderTextColor={COLORS.black}
+              secureTextEntry={!isPasswordShown}
+              style={styles.passwordInput}
+              value={password}
+              onChangeText={(text) => {
+                setPassword(text);
+                setErrors({ ...errors, password: "" });
+              }}
+            />
+            <Text style={styles.errorText}>{errors.password}</Text>
           </View>
 
-          <Button title="Sign Up" filled style={styles.signupButton} />
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Confirm Password</Text>
+            <TextInput
+              placeholder="**********"
+              placeholderTextColor={COLORS.black}
+              secureTextEntry={!isPasswordShown}
+              style={styles.passwordInput}
+              value={passwordConfirm}
+              onChangeText={(text) => {
+                setPasswordConfirm(text);
+                setErrors({ ...errors, passwordConfirm: "" });
+              }}
+            />
+            <Text style={styles.errorText}>{errors.passwordConfirm}</Text>
+          </View>
+
+          <Button
+            title="Sign Up"
+            filled
+            style={styles.signupButton}
+            onPress={handleSignUp}
+          />
 
           <View style={styles.loginLink}>
             <Text style={{ fontSize: 16, color: COLORS.black }}>
@@ -128,10 +210,6 @@ const styles = {
     justifyContent: "center",
     paddingLeft: 22,
   },
-  passwordInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   passwordInput: {
     flex: 1,
     height: 48,
@@ -144,47 +222,9 @@ const styles = {
     position: "absolute",
     right: 12,
   },
-  checkboxContainer: {
-    flexDirection: "row",
-    marginVertical: 6,
-  },
-  checkbox: {
-    marginRight: 8,
-  },
   signupButton: {
     marginTop: 18,
     marginBottom: 4,
-  },
-  orDivider: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 20,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: COLORS.grey,
-    marginHorizontal: 10,
-  },
-  socialButtons: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  socialButton: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    height: 52,
-    borderWidth: 1,
-    borderColor: COLORS.grey,
-    marginRight: 4,
-    borderRadius: 10,
-  },
-  socialIcon: {
-    height: 36,
-    width: 36,
-    marginRight: 8,
   },
   loginLink: {
     flexDirection: "row",
@@ -196,6 +236,11 @@ const styles = {
     color: COLORS.primary,
     fontWeight: "bold",
     marginLeft: 6,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginLeft: 4,
   },
 };
 

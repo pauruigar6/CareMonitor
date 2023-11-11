@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Image,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -18,14 +17,36 @@ import COLORS from "../constants/colors";
 const Login = ({ navigation }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
+  const handleLogin = () => {
+    if (email === "") {
+      setEmailError(true);
+    } else {
+      setEmailError(false);
+    }
+
+    if (password === "") {
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
+
+    if (email !== "" && password !== "") {
+      // Realiza la lógica de inicio de sesión
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0} // Ajusta el offset según sea necesario
-        keyboardShouldPersistTaps="handled" // Evita que el teclado tape el contenido
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+        keyboardShouldPersistTaps="handled"
       >
         <ScrollView>
           <View style={styles.contentContainer}>
@@ -41,8 +62,15 @@ const Login = ({ navigation }) => {
                   placeholderTextColor={COLORS.black}
                   keyboardType="email-address"
                   style={styles.input}
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
                 />
               </View>
+              {emailError && (
+                <Text style={styles.errorText}>
+                  Please fill in your email address
+                </Text>
+              )}
             </View>
 
             <View style={styles.inputContainer}>
@@ -53,6 +81,8 @@ const Login = ({ navigation }) => {
                   placeholderTextColor={COLORS.black}
                   secureTextEntry={!isPasswordShown}
                   style={styles.input}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
                 />
                 <TouchableOpacity
                   onPress={() => setIsPasswordShown(!isPasswordShown)}
@@ -65,6 +95,11 @@ const Login = ({ navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
+              {passwordError && (
+                <Text style={styles.errorText}>
+                  Please fill in your password
+                </Text>
+              )}
             </View>
 
             <View style={styles.checkboxContainer}>
@@ -77,7 +112,12 @@ const Login = ({ navigation }) => {
               <Text>Remember Me</Text>
             </View>
 
-            <Button title="Login" filled style={styles.loginButton} />
+            <Button
+              title="Login"
+              filled
+              style={styles.loginButton}
+              onPress={handleLogin}
+            />
 
             <View style={styles.signupTextContainer}>
               <Text style={styles.signupText}>Don't have an account? </Text>
@@ -109,13 +149,6 @@ const styles = {
     fontWeight: "bold",
     marginVertical: 12,
     color: COLORS.black,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: COLORS.black,
-  },
-  inputContainer: {
-    marginBottom: 12,
   },
   label: {
     fontSize: 16,
@@ -150,39 +183,9 @@ const styles = {
     marginTop: 18,
     marginBottom: 4,
   },
-  divider: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 20,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: COLORS.grey,
-    marginHorizontal: 10,
-  },
-  dividerText: {
+  errorText: {
+    color: "red",
     fontSize: 14,
-  },
-  socialButtonsContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  socialButton: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    height: 52,
-    borderWidth: 1,
-    borderColor: COLORS.grey,
-    marginRight: 4,
-    borderRadius: 10,
-  },
-  socialButtonIcon: {
-    height: 36,
-    width: 36,
-    marginRight: 8,
   },
   signupTextContainer: {
     flexDirection: "row",
