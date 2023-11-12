@@ -88,9 +88,6 @@ const Signup = ({ navigation }) => {
             >
               Create Account
             </Text>
-            <Text style={{ fontSize: 16, color: COLORS.black }}>
-              Connect with your friends today!
-            </Text>
           </View>
 
           <View style={styles.inputContainer}>
